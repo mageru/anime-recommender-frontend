@@ -1,7 +1,13 @@
 package models
-
+import play.api.mvc.{Action}
+import play.api.libs.ws.WS
+import play.api.libs.concurrent.Execution.Implicits._
+import scala.concurrent.Future
+import scala.concurrent.Await
+import scala.concurrent.duration._
+import scala.util.parsing.combinator.RegexParsers
 /**
- * Created by Justin on 4/23/2014.
+ * Created by Justin
  */
 case class Show(showid: Integer, title: String, status: String, classification: String,
                 episodes: Option[Int], showType: String, startDate: Option[String],
@@ -12,8 +18,9 @@ object Show {
   import anorm.SqlQuery
 
   val sql: SqlQuery = SQL("""select s.showid as showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate,s.averagememberscore, '#' || string_agg(g.genre,' #') as genres
-                            from preferences.shows s JOIN preferences.genres g ON (s.showid = g.showid)
-                            where g.genre != ''
+                            from preferences.shows s, preferences.genres g 
+                            where s.showid = g.showid
+                            and g.genre != ''
                             group by s.showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate
                             ORDER BY s.showid""".stripMargin)
 
@@ -24,8 +31,9 @@ object Show {
   def findById(showid: Int): Option[Show] = {
       DB.withConnection { implicit connection =>
         val sql = SQL("""select s.showid ,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate, s.averagememberscore,'#' || string_agg(g.genre,' #') as genres
-                            from preferences.shows s JOIN preferences.genres g ON (s.showid = g.showid)
-                            where g.genre != ''
+                            from preferences.shows s, preferences.genres g 
+                            where s.showid = g.showid
+                            and g.genre != ''
                             and s.showid = {showid}
                             group by s.showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate
                             ORDER BY s.showid""".stripMargin)
@@ -80,4 +88,4 @@ object Show {
   }
 }  
 
-case class Recommendation(profile : String, showID : Int, strength : Long)
+

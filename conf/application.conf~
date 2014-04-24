@@ -10,7 +10,6 @@ application.secret="ZKI5j]ahCa?oYitIHvy=4TfGyN:Kc61XYmCg5vfqQu1[FU/eBTlL3o>D>3E3
 # The application languages
 # ~~~~~
 application.langs="en"
-application.mode=dev
 
 # Global object class
 # ~~~~~

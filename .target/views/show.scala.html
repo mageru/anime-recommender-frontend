@@ -1,4 +1,4 @@
-@(shows: List[models.Show])
+@(show: models.Show)
 
 <!DOCTYPE html>
 <html>
@@ -8,14 +8,13 @@
     <link rel='stylesheet' href='@routes.WebJarAssets.at(WebJarAssets.locate("bootstrap.min.css"))'>
     <link rel='stylesheet' href='@routes.Assets.at("stylesheets/index.css")'>
     <script type='text/javascript' src='@routes.WebJarAssets.at(WebJarAssets.locate("jquery.min.js"))'></script>
+    <script type="text/javascript" src="@routes.MessageController.javascriptRoutes"></script>
 </head>
 <body>
     <div class="container">
-        @for(show <- shows) {
             <li>
                 @show.showid,@show.title,@show.avgMemberScore,@show.genres
             </li>
-        }
     </div>
 </body>
 </html>
