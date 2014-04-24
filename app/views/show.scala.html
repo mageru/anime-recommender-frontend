@@ -1,4 +1,4 @@
-@(shows: List[models.Show])
+@(show: models.Show)
 
 <!DOCTYPE html>
 <html>
@@ -12,11 +12,9 @@
 </head>
 <body>
     <div class="container">
-        @for(show <- shows) {
             <li>
                 @show.showid,@show.title,@show.avgMemberScore,@show.genres
             </li>
-        }
     </div>
 </body>
 </html>

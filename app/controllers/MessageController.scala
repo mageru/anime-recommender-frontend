@@ -22,6 +22,11 @@ object MessageController extends Controller {
       val showList: List[Show] = Show.getAllWithParser
       Ok(views.html.shows(showList))
   }
+  
+  def getShow(showid: Int) = Action { implicit request =>
+     Show.findById(showid).map { show =>
+      Ok(views.html.show(show))}.getOrElse(NotFound)
+  }
 
   def getMessage = Action {
     Ok(Json.toJson(Message("Hello from Scala")))
@@ -32,8 +37,8 @@ object MessageController extends Controller {
   }
   
   def feedTitle() = Action { implicit request =>
-  val profile: Option[String] = request.getQueryString("profile")
-  Async {
+    val profile: Option[String] = request.getQueryString("profile")
+    Async {
         WS.url("http://csprofessional.net:8091/recommend/"+profile.getOrElse("mageru")).withHeaders("Accept"-> "application/json").get.map(response => Ok(response.body))
     }     
   }

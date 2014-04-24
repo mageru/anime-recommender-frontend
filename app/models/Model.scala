@@ -5,16 +5,33 @@ package models
  */
 case class Show(showid: Integer, title: String, status: String, classification: String,
                 episodes: Option[Int], showType: String, startDate: Option[String],
-                endDate: Option[String], avgMemberScore: String)
+                endDate: Option[String], avgMemberScore: String, genres: String)
 
 object Show {
   import anorm.SQL
   import anorm.SqlQuery
 
-  val sql: SqlQuery = SQL("select * from preferences.shows")
+  val sql: SqlQuery = SQL("""select s.showid as showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate,s.averagememberscore, '#' || string_agg(g.genre,' #') as genres
+                            from preferences.shows s JOIN preferences.genres g ON (s.showid = g.showid)
+                            where g.genre != ''
+                            group by s.showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate
+                            ORDER BY s.showid""".stripMargin)
+
 
   import play.api.Play.current
   import play.api.db.DB
+  
+  def findById(showid: Int): Option[Show] = {
+      DB.withConnection { implicit connection =>
+        val sql = SQL("""select s.showid ,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate, s.averagememberscore,'#' || string_agg(g.genre,' #') as genres
+                            from preferences.shows s JOIN preferences.genres g ON (s.showid = g.showid)
+                            where g.genre != ''
+                            and s.showid = {showid}
+                            group by s.showid,s.title,s.status,s.classification,s.episodes,s.showtype,s.startdate,s.enddate
+                            ORDER BY s.showid""".stripMargin)
+        sql.on("showid" -> showid).as(showParser.singleOpt)
+      }
+  }
 
   def getAll: List[Show] = DB.withConnection { 
     implicit connection =>
@@ -24,7 +41,7 @@ object Show {
         row[String]("status"), row[String]("classification"),
         row[Option[Int]]("episodes"), row[String]("showType"),
         row[Option[String]]("startdate"), row[Option[String]]("enddate"),
-        row[String]("averagememberscore"))
+        row[String]("averagememberscore"), row[String]("genres"))
     ).toList    
   }
 
@@ -42,11 +59,12 @@ object Show {
     str("showtype") ~ 
     get[Option[String]]("startdate") ~ 
     get[Option[String]]("endDate") ~ 
-    str("averagememberscore") map {
-      case showid ~ title ~ status ~ classification ~ episodes ~ showType ~ startDate ~ endDate ~ avgMemberScore =>
+    str("averagememberscore") ~
+    str("genres") map {
+      case showid ~ title ~ status ~ classification ~ episodes ~ showType ~ startDate ~ endDate ~ avgMemberScore ~ genres =>
         Show(showid, title, status, classification,
             episodes, showType, startDate,
-            endDate, avgMemberScore)
+            endDate, avgMemberScore, genres)
     }
   }
   
@@ -60,4 +78,6 @@ object Show {
     implicit connection =>
     sql.as(showsParser)
   }
-}
+}  
+
+case class Recommendation(profile : String, showID : Int, strength : Long)
