@@ -9,12 +9,19 @@ import scala.concurrent.Future
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import play.api.libs.json.Json
+import models.Show
 
 case class Message(value: String)
 
 object MessageController extends Controller {
 
   implicit val fooWrites = Json.writes[Message]
+  
+  def list() = Action { implicit request =>
+      //Ok(views.html.shows(Show.getAllWithParser))//.map { shows => Ok(views.html.shows(shows)) }.getOrElse(NotFound)
+      val showList: List[Show] = Show.getAllWithParser
+      Ok(views.html.shows(showList))
+  }
 
   def getMessage = Action {
     Ok(Json.toJson(Message("Hello from Scala")))

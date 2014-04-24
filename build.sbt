@@ -1,11 +1,12 @@
-name := """hello-play"""
+name := """anime-recommender-frontend"""
 
 version := "1.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   // Select Play modules
-  //jdbc,      // The JDBC connection pool and the play.api.db API
-  //anorm,     // Scala RDBMS Library
+  jdbc,      // The JDBC connection pool and the play.api.db API
+  "postgresql" % "postgresql" % "9.1-901.jdbc4",
+  anorm,     // Scala RDBMS Library
   //javaJdbc,  // Java database API
   //javaEbean, // Java Ebean plugin
   //javaJpa,   // Java JPA plugin
