@@ -1,13 +1,79 @@
 @(message: String)
 
-@main("Welcome to Play Framework") {
+@main("AnimeRecommender") {
 
     <script type='text/javascript' src='@routes.Assets.at("javascripts/index.min.js")'></script>
     
     <div class="well">
-        <h1>@message</h1>
+	    <div class="jumbotron">
+	        <h1>Final Project: Anime Recommender<br/>
+	        <small>Student: Justin Miller</small><br/>
+	        <small>School: Georgia Southern University</small><br/>
+	        </h1>
+	        <br/><br/>
+	        <div class="panel panel-default">
+                <div class="panel-body">   
+						Description:<br/>
+						System will use a combination of relational and graph database technologies that will compliment each other in order to create a system for identifying patterns in user preference for various shows and recommending TV shows based on perference.
+						<ul>
+							<li>The system will have a web front end and login for user interaction.</li>						
+							<li>This project will combine concepts learned from every class in this program.</li>						
+							<li>Database Design will be extremely important for the login system and wiring of the core application.</li>						
+							<li>Web scraping and API mining will be used to pull data from various third parties.</li>						
+							<li>Data Warehousing will be used to store the massive amount of data that will be pulled about shows and preferences.</li>
+							<li>AI concepts (data mining) will be used for approaches of mining valuable information from the data (what I should recommend to whom).</li>
+							<li>Web design will be necessary to build a web interface that is easy to use.</li>
+						</ul>
+                </div>
+            <div class="panel panel-default">
+			  <div class="panel-heading">
+			    <h3 class="panel-title">URL Pattern</h3>
+			  </div>
+			  <div class="panel-body">
+			    <p>http://csprofessional.net:9000/recommend/$profilename           : 
+			     <br/>This will recommend a set of up to 18 shows based on your ranking profile.
+			     <br/>*Note: Profiles correspond to user profiles on <a href="http://myanimelist.net">http://myanimelist.net</a>
+			    </p>
+			    <p>http://csprofessional.net:9000/recommend/$profilename?howMany=# : <br/>This will recommend the specified number of shows based on your ranking profile.</p>   
+			  </div>
+			  
+			</div>
+			<div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Statistics:</h3>
+              </div>
+              <div class="panel-body">
+                <p> Currently there are 465,494 users, 32,415 shows, and 41,155,169 rankings loaded to base recommendations on.</p>
+              </div>
+              
+            </div>
+			<div class="panel panel-default">
+              <div class="panel-heading">
+                <h3 class="panel-title">Samples</h3>
+              </div>
+              <div class="panel-body">
+                <p><a href="http://csprofessional.net:9000/recommend/mageru">http://csprofessional.net:9000/recommend/mageru</a> -> <a href="http://myanimelist.net/animelist/mageru">http://myanimelist.net/animelist/mageru</a> </p>
+                <p><a href="http://csprofessional.net:9000/recommend/Aokaado">http://csprofessional.net:9000/recommend/Aokaado</a> -> <a href="http://myanimelist.net/animelist/Aokaado">http://myanimelist.net/animelist/Aokaado</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/Miguelitius">http://csprofessional.net:9000/recommend/Miguelitius</a> -> <a href="http://myanimelist.net/animelist/Miguelitius">http://myanimelist.net/animelist/Miguelitius</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/GothicButterfly">http://csprofessional.net:9000/recommend/GothicButterfly</a> -> <a href="http://myanimelist.net/animelist/GothicButterfly">http://myanimelist.net/animelist/GothicButterfly</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/narutohuga">http://csprofessional.net:9000/recommend/narutohuga</a> -> <a href="http://myanimelist.net/animelist/narutohuga">http://myanimelist.net/animelist/narutohuga</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/Cataback101">http://csprofessional.net:9000/recommend/Cataback101</a> -> <a href="http://myanimelist.net/animelist/Cataback101">http://myanimelist.net/animelist/Cataback101</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/AmeOu">http://csprofessional.net:9000/recommend/AmeOu</a>-> <a href="http://myanimelist.net/animelist/AmeOu">http://myanimelist.net/animelist/AmeOu</a>-> <a href="http://myanimelist.net/animelist/AmeOu">http://myanimelist.net/animelist/AmeOu</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/MineCourage">http://csprofessional.net:9000/recommend/MineCourage</a> -> <a href="http://myanimelist.net/animelist/MineCourage">http://myanimelist.net/animelist/MineCourage</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/traumae">http://csprofessional.net:9000/recommend/traumae</a>-> <a href="http://myanimelist.net/animelist/traumae">http://myanimelist.net/animelist/traumae</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/bufulight">http://csprofessional.net:9000/recommend/bufulight</a> -> <a href="http://myanimelist.net/animelist/bufulight">http://myanimelist.net/animelist/bufulight</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/Uploader53">http://csprofessional.net:9000/recommend/Uploader53</a> -> <a href="http://myanimelist.net/animelist/Uploader53">http://myanimelist.net/animelist/Uploader53</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/metal621">http://csprofessional.net:9000/recommend/metal621</a> -> <a href="http://myanimelist.net/animelist/metal621">http://myanimelist.net/animelist/metal621</a></p>
+				<p><a href="http://csprofessional.net:9000/recommend/Riku45">http://csprofessional.net:9000/recommend/Riku45</a> -> <a href="http://myanimelist.net/animelist/Riku45">http://myanimelist.net/animelist/Riku45</a></p>
+				
+              </div>
+              
+            </div>
+            </div>
+            
+	    </div>
     </div>
 
-    <button id="getMessageButton">Get JSON Message</button>
+    
 
 }
