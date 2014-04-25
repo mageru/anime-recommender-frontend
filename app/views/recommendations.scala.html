@@ -1,4 +1,4 @@
-@(profileName: String, recommendations: Array[Recommendation])
+@(title: String, profile: String, recommendations: Array[Recommendation])
 
 
 <!DOCTYPE html>
@@ -14,12 +14,12 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container-fluid">
-                <a id="titleLink" class="brand" href="/">Recommendations for @profileName</a>
+                <a id="titleLink" class="brand" href="/">@title</a>
             </div>
         </div>
     </div>
     <div class="container">
-    <table class="table table-condensed table-striped">
+    <table class="table table-condensed table-striped table-hover">
         <tr>      
             <td>Strength</td> 
             <td>Title</td>
@@ -30,7 +30,13 @@
         </tr>  
         @for(rec <- recommendations) {
           <tr>
-            <td>@rec.strength</td>  
+            <td>
+                @if(!profile.isEmpty) {
+                    <a href="/why/@profile/@rec.showID">@rec.strength</a>
+                } else {
+                    @rec.strength
+                }
+            </td>  
             <td><a href="http://myanimelist.net/anime/@rec.showID"> @rec.show.title</a></td>
             <td>@rec.show.classification</td>
             <td>@rec.show.episodes</td>

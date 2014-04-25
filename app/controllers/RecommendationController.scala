@@ -33,14 +33,26 @@ object MessageController extends Controller {
   }
 
 
-  def getRecomendations(profile: String) = Action { implicit request => 
-  	val responsePromise = WS.url("http://csprofessional.net:8091/recommend/"+profile+"?howMany=18").get
+  def getRecomendations(profile: String) = Action { implicit request =>
+    val howMany: Option[String] = request.getQueryString("howMany")
+  	val responsePromise = WS.url("http://csprofessional.net:8091/recommend/"+profile+"?howMany="+howMany.getOrElse("18")).get
   	val response = Await.result(responsePromise, 10 seconds);
   	
-  	val recommendationsString = (response.body).split("\n") map (l => Recommendation(l))  	
-  	
-  	Ok(views.html.recommendations(profile, recommendationsString))
+  	val recommendationsString = (response.body).split("\n") map (line => Recommendation(line))  	
+  	val title = s"Recommendations for user: '$profile'"
+  	Ok(views.html.recommendations(title,profile,recommendationsString))
   }
+  
+  def getWhy(profile:String, showID: Int) = Action { implicit request => 
+    val responsePromise = WS.url("http://csprofessional.net:8091/because/"+profile+"/"+showID).get
+  	val response = Await.result(responsePromise, 10 seconds);
+  	
+  	val recommendationsString = (response.body).split("\n") map (line => Recommendation(line))
+  	val influencerShow : Show = Show.findById(showID).getOrElse(throw new IllegalArgumentException("Show not found"))
+  	val showTitle = influencerShow.title
+  	val title = s"Influencers for recommendation of '$showTitle' for $profile"
+  	Ok(views.html.recommendations(title,"", recommendationsString))
+  } 
   
 
 }

@@ -4,6 +4,7 @@
 
 GET     /                           controllers.MainController.index()
 GET     /recommend/:profileName     controllers.MessageController.getRecomendations(profileName: String)
+GET     /why/:profileName/:showID       controllers.MessageController.getWhy(profileName: String, showID: Int)
 GET     /shows                      controllers.MessageController.list
 GET     /show/:showid               controllers.MessageController.getShow(showid: Int)
 
