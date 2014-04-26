@@ -10,8 +10,8 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import play.api.libs.json.Json
 import models.Show
+import models.UserScore
 
-case class Message(value: String)
 case class Recommendation(line: String) {
   val data = line.split(",")
   val showID : Int = data(0).toInt
@@ -19,7 +19,8 @@ case class Recommendation(line: String) {
   val show : Show = Show.findById(showID).getOrElse(throw new IllegalArgumentException("Show not found"))
 }
 
-object MessageController extends Controller {
+
+object RecommendationController extends Controller {
 
   
   def list() = Action { implicit request =>
@@ -39,7 +40,7 @@ object MessageController extends Controller {
   	val response = Await.result(responsePromise, 10 seconds);
   	
   	val recommendationsString = (response.body).split("\n") map (line => Recommendation(line))  	
-  	val title = s"Recommendations for user: '$profile'"
+  	val title = s"Recommendations based on profile: '$profile'"
   	Ok(views.html.recommendations(title,profile,recommendationsString))
   }
   
@@ -52,7 +53,12 @@ object MessageController extends Controller {
   	val showTitle = influencerShow.title
   	val title = s"Influencers for recommendation of '$showTitle' for $profile"
   	Ok(views.html.recommendations(title,"", recommendationsString))
-  } 
+  }
+  
+  def getRankings(username: String) = Action { implicit request => 
+  	val rankings = UserScore.getProfileRankings(username)
+  	Ok(views.html.rankings(rankings))
+  }
   
 
 }

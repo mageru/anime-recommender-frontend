@@ -2,11 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET     /                           controllers.MainController.index()
-GET     /recommend/:profileName     controllers.MessageController.getRecomendations(profileName: String)
-GET     /why/:profileName/:showID       controllers.MessageController.getWhy(profileName: String, showID: Int)
-GET     /shows                      controllers.MessageController.list
-GET     /show/:showid               controllers.MessageController.getShow(showid: Int)
+GET     /                               controllers.MainController.index()
+GET     /recommend/:profileName         controllers.RecommendationController.getRecomendations(profileName: String)
+GET     /why/:profileName/:showID       controllers.RecommendationController.getWhy(profileName: String, showID: Int)
+GET     /rankings/:profileName          controllers.RecommendationController.getRankings(profileName: String)
+GET     /shows                          controllers.RecommendationController.list
+GET     /show/:showid                   controllers.RecommendationController.getShow(showid: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

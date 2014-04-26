@@ -1,4 +1,4 @@
-@(title: String, profile: String, recommendations: Array[Recommendation])
+@(userscores: List[UserScore])
 
 
 <!DOCTYPE html>
@@ -14,37 +14,28 @@
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
             <div class="container-fluid">
-                <a id="titleLink" class="brand" href="/">@title</a>
+                <a id="titleLink" class="brand" href="/">@userscores(0).userName's show rankings</a>
             </div>
         </div>
     </div>
     <div class="container">
-     @if(!profile.isEmpty) {
-       <a href="/rankings/@profile">@profile's profile</a><br/><a href="http://myanimelist.net/animelist/@profile">MAL Profile Link</a>
-     }          
     <table class="table table-condensed table-striped table-hover">
         <tr>      
-            <td>Strength</td> 
             <td>Title</td>
             <td>Classification</td>
             <td>Episodes</td>
             <td>Average Score</td>
             <td>Genres</td>
+            <td>Ranked</td>
         </tr>  
-        @for(rec <- recommendations) {
+        @for(score <- userscores) {
           <tr>
-            <td>
-                @if(!profile.isEmpty) {
-                    <a href="/why/@profile/@rec.showID">@rec.strength</a>
-                } else {
-                    @rec.strength
-                }
-            </td>  
-            <td><a href="http://myanimelist.net/anime/@rec.showID"> @rec.show.title</a></td>
-            <td>@rec.show.classification</td>
-            <td>@rec.show.episodes</td>
-            <td>@rec.show.avgMemberScore</td>
-            <td>@rec.show.genres</td>                 
+            <td><a href="http://myanimelist.net/anime/@score.rankedShow.showid"> @score.rankedShow.title</a></td>
+            <td>@score.rankedShow.classification</td>
+            <td>@score.rankedShow.episodes</td>
+            <td>@score.rankedShow.avgMemberScore</td>
+            <td>@score.rankedShow.genres</td>  
+            <td>@score.rating/10</td>               
           </tr>     
         }
     </table>

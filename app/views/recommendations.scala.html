@@ -19,6 +19,9 @@
         </div>
     </div>
     <div class="container">
+     @if(!profile.isEmpty) {
+       <a href="/rankings/@profile">@profile's profile</a><br/><a href="http://myanimelist.net/animelist/@profile">MAL Profile Link</a>
+     }          
     <table class="table table-condensed table-striped table-hover">
         <tr>      
             <td>Strength</td> 

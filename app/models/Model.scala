@@ -12,6 +12,46 @@ import scala.util.parsing.combinator.RegexParsers
 case class Show(showid: Integer, title: String, status: String, classification: String,
                 episodes: Option[Int], showType: String, startDate: Option[String],
                 endDate: Option[String], avgMemberScore: String, genres: String)
+           
+case class UserScore(userName: String, rankedShow: Show, rating: Int)
+
+object UserScore {
+  import anorm.SQL
+  import anorm.SqlQuery
+  import play.api.Play.current
+  import play.api.db.DB
+    
+  def getProfileRankings(user_id: String): List[UserScore] =  {
+    DB.withConnection { implicit connection =>		
+    val sql: SqlQuery = SQL("""select user_id,item_id,preference
+  						from preferences.taste_preferences
+  						where user_id = {user_id}""".stripMargin)	  					
+
+    	    sql.on("user_id" -> user_id).as(rankingsParser)
+    }
+  }
+  
+  import anorm.RowParser
+
+  val rankingParser: RowParser[UserScore] = {
+    import anorm.~
+    import anorm.SqlParser._
+
+    str("user_id") ~ 
+    int("item_id") ~ 
+    int("preference") map {
+      case user_id ~ item_id ~ preference  =>
+        UserScore(user_id, Show.findById(item_id).getOrElse(throw new IllegalArgumentException("Show not found")), preference)
+    }
+  }
+  
+  import anorm.ResultSetParser
+
+  val rankingsParser: ResultSetParser[List[UserScore]] = {
+     rankingParser *
+  }  
+}
+
 
 object Show {
   import anorm.SQL
